@@ -1,11 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mi Página Web</title>
+  <title>Registro Docentes</title>
 </head>
 <body>
-<h1>Hola soy Wilmer</h1>
-<p>Estudiante de Ingeniería en Telecomunicaciones</p>
+
+<h2>Registro Docente</h2>
+<input type="text" id="nombre" placeholder="Nombre">
+<button onclick="guardar()">Guardar</button>
+
+<script type="module">
+
+// Importar Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Pega aquí tu configuración
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAbJSLpxIMh8Ct_tTM3BtCM9KSCx7UlyAw",
+  authDomain: "ejemplo-40132.firebaseapp.com",
+  databaseURL: "https://ejemplo-40132-default-rtdb.firebaseio.com",
+  projectId: "ejemplo-40132",
+  storageBucket: "ejemplo-40132.firebasestorage.app",
+  messagingSenderId: "463432308457",
+  appId: "1:463432308457:web:24b39443f5beef2a750278"
+};
+
+// Inicializar
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.guardar = async function() {
+  const nombre = document.getElementById("nombre").value;
+
+  await addDoc(collection(db, "docentes"), {
+    nombre: nombre
+  });
+
+  alert("Docente guardado");
+};
+
+</script>
+
 </body>
 </html>
-<h1>fffffffffffffffffff</h1>
