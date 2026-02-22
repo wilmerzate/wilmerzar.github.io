@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Registro Docentes</title>
+  <title>Registro Docentes - Firestore</title>
 </head>
 <body>
 
@@ -13,13 +13,12 @@
 
 // Importar Firebase desde CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// TU CONFIGURACIÓN (la que te dio Firebase)
+// TU CONFIGURACIÓN
 const firebaseConfig = {
   apiKey: "AIzaSyAbJSLpxIMh8Ct_tTM3BtCM9KSCx7UlyAw",
   authDomain: "ejemplo-40132.firebaseapp.com",
-  databaseURL: "https://ejemplo-40132-default-rtdb.firebaseio.com",
   projectId: "ejemplo-40132",
   storageBucket: "ejemplo-40132.firebasestorage.app",
   messagingSenderId: "463432308457",
@@ -28,17 +27,23 @@ const firebaseConfig = {
 
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+const db = getFirestore(app);
 
-// Función para guardar
-window.guardar = function() {
-  const nombre = document.getElementById("nombre").value;
+// Función guardar en Firestore
+window.guardar = async function() {
+  try {
+    const nombre = document.getElementById("nombre").value;
 
-  push(ref(database, "docentes"), {
-    nombre: nombre
-  });
+    await addDoc(collection(db, "docentes"), {
+      nombre: nombre,
+      fecha: new Date()
+    });
 
-  alert("Docente guardado correctamente");
+    alert("Docente guardado en Firestore");
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error al guardar. Revisa la consola.");
+  }
 };
 
 </script>
