@@ -54,18 +54,26 @@ window.guardar = async function() {
 };
 
 // 🔥 TIEMPO REAL
-onSnapshot(collection(db, "docentes"), (snapshot) => {
-  lista.innerHTML = "";
+onSnapshot(collection(db, "docentes"), 
+  (snapshot) => {
+    lista.innerHTML = "";
 
-  snapshot.forEach((docu) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${docu.data().nombre}
-      <button onclick="eliminar('${docu.id}')">Eliminar</button>
-    `;
-    lista.appendChild(li);
-  });
-});
+    snapshot.forEach((docu) => {
+      const li = document.createElement("li");
+      li.textContent = docu.data().nombre + " ";
+
+      const btn = document.createElement("button");
+      btn.textContent = "Eliminar";
+      btn.onclick = () => eliminar(docu.id);
+
+      li.appendChild(btn);
+      lista.appendChild(li);
+    });
+  },
+  (error) => {
+    console.error("Error leyendo datos:", error);
+  }
+);
 
 window.eliminar = async function(id) {
   await deleteDoc(doc(db, "docentes", id));
